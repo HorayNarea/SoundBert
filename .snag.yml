@@ -1,0 +1,12 @@
+ignore:
+    - .git
+    - bin
+    - rice-box.go
+
+build:
+    - rice embed-go
+    - gofmt -w -s -e .
+    - go vet ./...
+    - go test ./...
+    - go build -race -o bin/SoundBert-race .
+    - go build -o bin/SoundBert .

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>SoundBert</title>
+
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" href="/assets/css/bootstrap-3.3.6.min.css" />
+		<style type="text/css">
+		#snippets .btn {
+			padding: 8px;
+			margin: 0 5px 5px 0;
+		}
+		footer {
+			padding-bottom: 10px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-header">
+				<h1>
+					<a href="/"><img src="/assets/logo.png" height="64" alt="SoundBert Logo" /></a>
+					<p class="lead">SoundBert - A simple REST based soundboard in Go.</p>
+				</h1>
+			</div>
+			<div id="snippets"></div>
+			<hr />
+			<footer>
+				<a class="pull-left btn btn-danger btn-xs" id="stop"><i class="glyphicon glyphicon-stop"></i>&nbsp;Stop playback</a>
+				<span class="pull-right">
+					<a href="/help.html" class="text-muted">Help</a> | <a href="http://iconka.com/" class="text-muted" target="_blank">Logo by Denis Sazhin</a>
+				</span>
+			</footer>
+		</div> <!-- /container -->
+		<script type="text/javascript">
+				var template = '<a class="btn btn-default" data-snippet-url="{{ url }}">{{ file }}</a>';
+				var labelTemplate = '<h4><span class="label label-default">{{ label }}</span></h4><hr /><div data-id="{{ label }}"></div>';
+		</script>
+		<script type="text/javascript" src="/assets/js/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="/assets/js/mustache-0.8.2.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$.getJSON('/list', function(data) {
+					var labelButtons = {};
+					addLabel('unlabelled');
+					$.each(data, function(file, url) {
+						var split = file.split('/');
+						var label = false;
+						if (split.length > 1) {
+							label = split[0];
+							file = split.pop();
+
+							if (undefined === labelButtons[label]) {
+								labelButtons[label] = [];
+							}
+
+							labelButtons[label].push({
+								file: file,
+								url: url,
+								label: label
+							});
+						}
+						else {
+							addSnippet(file, url, label);
+						}
+					});
+
+					$.each(labelButtons, function(label, snippets) {
+						addLabel(label);
+						$.each(snippets, function(key, snippet) {
+							addSnippet(snippet.file, snippet.url, label);
+						});
+					});
+
+					function addSnippet(file, url, label) {
+						var button = Mustache.render(template, {
+							file: file,
+							url: url
+						});
+
+						var container = label ? $('div[data-id="'+label+'"]') : $('#snippets');
+						container.append(button);
+					}
+
+					function addLabel(label) {
+						$('#snippets').append(Mustache.render(labelTemplate, {label: label}));
+					}
+
+					$(document).on('click', '#snippets a', function() {
+						var btn = $(this);
+						var snippet = $(this).text();
+						btn.html('<i class="glyphicon glyphicon-play"></i>&nbsp;'+snippet).removeClass('btn-default').addClass('btn-success');
+						$.post('/play', {filename: btn.data('snippet-url')});
+						setTimeout(function() {
+							btn.text(snippet).removeClass('btn-success').addClass('btn-default');
+						}, 2000);
+					});
+
+					$('#stop').on('click', function() {
+						$.get('/stop');
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

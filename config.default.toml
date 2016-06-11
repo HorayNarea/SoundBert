@@ -1,0 +1,4 @@
+# IP = "127.0.0.1" # an IPv4/v6 address or hostname is ok
+Port = 8080
+Sounds = "./sounds"
+AllowedFormats = ["wav", "mp3", "opus", "m4a", "ogg"]

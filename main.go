@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"net"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -12,29 +13,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var snippets []Sound
-var conf Config
-var staticBox *rice.Box
-var conffile string
-var debug bool
-
-func init() {
-	flag.StringVar(&conffile, "c", "config.toml", "Configuration file, must be valid TOML (shorthand)")
-	flag.BoolVar(&debug, "d", false, "Start the webserver in debug-mode (shorthand)")
-	flag.Parse()
-
-	_, err := toml.DecodeFile(conffile, &conf)
-	checkErr(err)
-}
+var (
+	snippets  []Sound
+	conf      Config
+	staticBox *rice.Box
+	conffile  = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
+	debug     = flag.Bool("d", false, "Start the webserver in debug-mode")
+)
 
 func main() {
+	flag.Parse()
+
+	_, err := toml.DecodeFile(*conffile, &conf)
+	checkErr(err)
+
 	staticBox = rice.MustFindBox("static")
 	conf.Sounds = path.Clean(conf.Sounds)
 	filepath.Walk(conf.Sounds, addSound)
 
 	mplayer.StartSlave()
 
-	if !debug {
+	if !*debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -50,5 +49,5 @@ func main() {
 	router.GET("/stop", stop)
 	router.POST("/play", play)
 
-	router.Run(conf.IP + ":" + strconv.Itoa(conf.Port))
+	router.Run(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)))
 }

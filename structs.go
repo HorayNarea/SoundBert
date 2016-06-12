@@ -6,7 +6,7 @@ type Sound struct {
 }
 
 type Config struct {
-	IP             string
+	Host           string
 	Port           int
 	Sounds         string
 	AllowedFormats []string

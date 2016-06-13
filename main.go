@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"net"
+	"net/http"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/GeertJohan/go.rice"
 	"github.com/HorayNarea/go-mplayer"
-	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -18,7 +18,6 @@ var (
 	conf      Config
 	staticBox *rice.Box
 	conffile  = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
-	debug     = flag.Bool("d", false, "Start the webserver in debug-mode")
 )
 
 func main() {
@@ -33,21 +32,10 @@ func main() {
 
 	mplayer.StartSlave()
 
-	if !*debug {
-		gin.SetMode(gin.ReleaseMode)
-	}
+	http.Handle("/", http.FileServer(staticBox.HTTPBox()))
+	http.HandleFunc("/list", list)
+	http.HandleFunc("/stop", stop)
+	http.HandleFunc("/play", play)
 
-	router := gin.Default()
-
-	router.GET("/", index)
-	router.GET("/help.html", help)
-	router.GET("/favicon.ico", favicon)
-	router.GET("/logo.png", logo)
-	router.StaticFS("/assets", staticBox.HTTPBox())
-
-	router.GET("/list", list)
-	router.GET("/stop", stop)
-	router.POST("/play", play)
-
-	router.Run(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)))
+	http.ListenAndServe(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)), nil)
 }

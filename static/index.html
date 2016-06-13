@@ -9,7 +9,7 @@
 
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="/assets/css/bootstrap-3.3.6.min.css" />
+		<link rel="stylesheet" href="/css/bootstrap-3.3.6.min.css" />
 		<style type="text/css">
 		#snippets .btn {
 			padding: 8px;
@@ -24,7 +24,7 @@
 		<div class="container">
 			<div class="page-header">
 				<h1>
-					<a href="/"><img src="/assets/logo.png" height="64" alt="SoundBert Logo" /></a>
+					<a href="/"><img src="/logo.png" height="64" alt="SoundBert Logo" /></a>
 					<p class="lead">SoundBert - A simple REST based soundboard in Go.</p>
 				</h1>
 			</div>
@@ -41,8 +41,8 @@
 				var template = '<a class="btn btn-default" data-snippet-url="{{ url }}">{{ file }}</a>';
 				var labelTemplate = '<h4><span class="label label-default">{{ label }}</span></h4><hr /><div data-id="{{ label }}"></div>';
 		</script>
-		<script type="text/javascript" src="/assets/js/jquery-2.2.4.min.js"></script>
-		<script type="text/javascript" src="/assets/js/mustache-0.8.2.min.js"></script>
+		<script type="text/javascript" src="/js/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="/js/mustache-0.8.2.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$.getJSON('/list', function(data) {

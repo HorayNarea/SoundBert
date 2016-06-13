@@ -12,8 +12,8 @@ func checkErr(err error) {
 	}
 }
 
-func sanitizeName(filename string) string {
-	for _, ext := range conf.AllowedFormats {
+func sanitizeName(filename string, AllowedFormats []string) string {
+	for _, ext := range AllowedFormats {
 		filename = strings.TrimSuffix(filename, "."+ext)
 	}
 
@@ -21,9 +21,7 @@ func sanitizeName(filename string) string {
 		filename = strings.Replace(filename, s, " ", -1)
 	}
 
-	filename = strings.Title(filename)
-
-	return filename
+	return strings.Title(filename)
 }
 
 func addSound(p string, info os.FileInfo, err error) error {
@@ -32,7 +30,7 @@ func addSound(p string, info os.FileInfo, err error) error {
 		for _, ext := range conf.AllowedFormats {
 			if strings.HasSuffix(p, "."+ext) {
 				name := strings.TrimPrefix(p, conf.Sounds+"/")
-				snippets = append(snippets, Sound{sanitizeName(name), name})
+				snippets = append(snippets, Sound{sanitizeName(name, conf.AllowedFormats), name})
 			}
 		}
 	}

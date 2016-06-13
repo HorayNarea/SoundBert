@@ -14,10 +14,10 @@ import (
 )
 
 var (
-	snippets  []Sound
-	conf      Config
-	staticBox *rice.HTTPBox
-	conffile  = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
+	snippets    []Sound
+	conf        Config
+	staticBox   *rice.HTTPBox
+	conffile    = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
 	snippetlist = map[string]interface{}{}
 )
 

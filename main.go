@@ -15,7 +15,7 @@ import (
 var (
 	snippets  []Sound
 	conf      Config
-	staticBox *rice.Box
+	staticBox *rice.HTTPBox
 	conffile  = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
 )
 
@@ -25,12 +25,12 @@ func main() {
 	_, err := toml.DecodeFile(*conffile, &conf)
 	checkErr(err)
 
-	staticBox = rice.MustFindBox("static")
+	staticBox = rice.MustFindBox("static").HTTPBox()
 	conf.Sounds = path.Clean(conf.Sounds)
 
 	mplayer.StartSlave()
 
-	http.Handle("/", http.FileServer(staticBox.HTTPBox()))
+	http.Handle("/", http.FileServer(staticBox))
 	http.HandleFunc("/list", list)
 	http.HandleFunc("/stop", stop)
 	http.HandleFunc("/play", play)

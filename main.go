@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/http"
 	"path"
-	"path/filepath"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -28,7 +27,6 @@ func main() {
 
 	staticBox = rice.MustFindBox("static")
 	conf.Sounds = path.Clean(conf.Sounds)
-	filepath.Walk(conf.Sounds, addSound)
 
 	mplayer.StartSlave()
 

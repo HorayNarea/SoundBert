@@ -4,8 +4,8 @@ ignore:
     - rice-box.go
 
 build:
-    - rice embed-go
     - gofmt -w -s -e .
+    - rice embed-go
     - go vet ./...
     - go test ./...
     - go build -race -o bin/SoundBert-race .

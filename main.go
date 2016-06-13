@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"path"
+	"path/filepath"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -17,6 +18,7 @@ var (
 	conf      Config
 	staticBox *rice.HTTPBox
 	conffile  = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
+	snippetlist = map[string]interface{}{}
 )
 
 func main() {
@@ -27,6 +29,11 @@ func main() {
 
 	staticBox = rice.MustFindBox("static").HTTPBox()
 	conf.Sounds = path.Clean(conf.Sounds)
+
+	filepath.Walk(conf.Sounds, addSound)
+	for _, s := range snippets {
+		snippetlist[s.name] = s.path
+	}
 
 	mplayer.StartSlave()
 

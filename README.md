@@ -68,4 +68,4 @@ Sample response:
 ISC-based, see [LICENSE](LICENSE)
 
 ### Thanks
-@jlis for the original [soundbeard](https://github.com/jlis/soundbeard) in NodeJS
+[jlis](https://github.com/jlis) for the original [soundbeard](https://github.com/jlis/soundbeard) in NodeJS

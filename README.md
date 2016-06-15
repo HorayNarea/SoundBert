@@ -61,6 +61,9 @@ Sample response:
 ### Stop playback
 [GET] **/stop**
 
+### Reload sounds
+[GET] **/reload_sounds**
+
 ### Help
 [GET]  **/help.html**
 

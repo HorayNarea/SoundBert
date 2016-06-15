@@ -20,9 +20,8 @@ install:
     - go get github.com/HorayNarea/SoundBert
 
 script:
-    - rice embed-go
     - gofmt -d -l -s -e .
+    - rice embed-go
     - go vet ./...
     - go test ./...
-    - go build -race -o bin/SoundBert_race .
     - go build -o bin/SoundBert .

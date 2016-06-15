@@ -4,10 +4,18 @@ import (
 	"encoding/json"
 	"net/http"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/HorayNarea/go-mplayer"
 )
+
+func reload_sounds(w http.ResponseWriter, r *http.Request) {
+	filepath.Walk(conf.Sounds, addSound)
+	for _, s := range snippets {
+		snippetlist[s.name] = s.path
+	}
+}
 
 func list(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

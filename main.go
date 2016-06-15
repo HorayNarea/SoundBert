@@ -39,6 +39,7 @@ func main() {
 
 	http.Handle("/", http.FileServer(staticBox))
 	http.HandleFunc("/list", list)
+	http.HandleFunc("/reload_sounds", reload_sounds)
 	http.HandleFunc("/stop", stop)
 	http.HandleFunc("/play", play)
 

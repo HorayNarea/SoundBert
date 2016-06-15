@@ -65,7 +65,7 @@ Sample response:
 [GET]  **/help.html**
 
 ### License
-ISC-based, see [LICENSE](LICENSE)
+ISC (it's like MIT but even simpler), see [LICENSE](LICENSE) for full text
 
 ### Thanks
 [jlis](https://github.com/jlis) for the original [soundbeard](https://github.com/jlis/soundbeard) in NodeJS

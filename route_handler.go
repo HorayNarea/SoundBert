@@ -12,7 +12,7 @@ import (
 
 func reload_sounds(w http.ResponseWriter, r *http.Request) {
 	snippets = nil
-	snippetlist = map[string]interface{}{}
+	snippetlist = map[string]string{}
 
 	filepath.Walk(conf.Sounds, addSound)
 	for _, s := range snippets {

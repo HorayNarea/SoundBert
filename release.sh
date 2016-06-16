@@ -6,7 +6,7 @@ export CGO_ENABLED=0
 compile() {
 	echo "Compiling for $1 on $2..."
 	if [ "$1" = "windows" ]; then
-		EXE=".exe"
+		local EXE=".exe"
 	fi
 	GOOS=$1 GOARCH=$2 GOARM=$3 go build -o bin/SoundBert-$1-$2$EXE .
 }

@@ -35,7 +35,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	checkErr(err)
 
 	filename := r.PostFormValue("filename")
-	content := map[string]interface{}{}
+	content := map[string]string{}
 
 	for _, pre := range []string{".", "..", "/"} {
 		if strings.HasPrefix(filename, pre) {

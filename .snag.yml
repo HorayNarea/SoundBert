@@ -5,6 +5,7 @@ ignore:
 
 build:
     - gofmt -w -s -e .
+    - golint
     - rice embed-go
     - go vet ./...
     - go test ./...

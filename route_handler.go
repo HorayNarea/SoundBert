@@ -10,7 +10,7 @@ import (
 	"github.com/HorayNarea/go-mplayer"
 )
 
-func reload_sounds(w http.ResponseWriter, r *http.Request) {
+func reloadSounds(w http.ResponseWriter, r *http.Request) {
 	snippets = nil
 	snippetlist = map[string]string{}
 

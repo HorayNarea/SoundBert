@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	snippets    []Sound
-	conf        Config
+	snippets    []sound
+	conf        config
 	staticBox   *rice.HTTPBox
 	conffile    = flag.String("c", "config.toml", "Configuration file, must be valid TOML")
 	snippetlist = map[string]string{}
@@ -39,7 +39,7 @@ func main() {
 
 	http.Handle("/", http.FileServer(staticBox))
 	http.HandleFunc("/list", list)
-	http.HandleFunc("/reload_sounds", reload_sounds)
+	http.HandleFunc("/reload_sounds", reloadSounds)
 	http.HandleFunc("/stop", stop)
 	http.HandleFunc("/play", play)
 

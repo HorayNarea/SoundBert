@@ -28,7 +28,7 @@ func addSound(p string, info os.FileInfo, err error) error {
 		for _, ext := range conf.AllowedFormats {
 			if strings.HasSuffix(p, "."+ext) {
 				name := strings.TrimPrefix(p, conf.Sounds+"/")
-				snippets = append(snippets, Sound{sanitizeName(name, ext), name})
+				snippets = append(snippets, sound{sanitizeName(name, ext), name})
 			}
 		}
 	}

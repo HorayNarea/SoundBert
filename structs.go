@@ -1,11 +1,11 @@
 package main
 
-type Sound struct {
+type sound struct {
 	name string
 	path string
 }
 
-type Config struct {
+type config struct {
 	Host           string
 	Port           int
 	Sounds         string

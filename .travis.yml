@@ -17,10 +17,12 @@ env:
 
 install:
     - go get github.com/GeertJohan/go.rice/rice
+    - go get github.com/golang/lint/golint
     - go get github.com/HorayNarea/SoundBert
 
 script:
     - gofmt -d -l -s -e .
+    - golint
     - rice embed-go
     - go vet ./...
     - go test ./...

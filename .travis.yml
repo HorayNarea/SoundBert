@@ -3,18 +3,6 @@ language: go
 go:
     - 1.6
 
-env:
-    - GOOS=linux GOARCH=amd64
-    - GOOS=windows GOARCH=amd64
-    - GOOS=darwin GOARCH=amd64
-    - GOOS=freebsd GOARCH=amd64
-
-    - GOOS=linux GOARCH=386
-    - GOOS=windows GOARCH=386
-    - GOOS=freebsd GOARCH=386
-
-    - GOOS=linux GOARCH=arm
-
 install:
     - go get github.com/GeertJohan/go.rice/rice
     - go get github.com/golang/lint/golint

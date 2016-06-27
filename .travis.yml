@@ -1,17 +1,36 @@
 language: go
 
 go:
-    - 1.6
+  - 1.6
 
 install:
-    - go get github.com/GeertJohan/go.rice/rice
-    - go get github.com/golang/lint/golint
-    - go get github.com/HorayNarea/SoundBert
+  - go get github.com/GeertJohan/go.rice/rice
+  - go get github.com/golang/lint/golint
+  - go get github.com/HorayNarea/SoundBert
 
 script:
-    - gofmt -d -l -s -e .
-    - golint
-    - rice embed-go
-    - go vet ./...
-    - go test ./...
-    - go build -o bin/SoundBert .
+  - gofmt -d -l -s -e .
+  - golint
+  - rice embed-go
+  - go vet ./...
+  - go test ./...
+  - go build -o bin/SoundBert .
+  - ./release.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: qkdMj192o1CckVP3qCKcYiFgCrV19CyAcaNayYGJ0I2rKUEKtH8/79V027TXS4Jow6i3JY6b23WWhUs5pchN3hhUs97tB9AhFDYFNZtGI3Y0+sarEDQu/AAUC4s/4LFNwA/tP0S3KwER1SZC3WZGlDA7rU05XdE4tiEp43v5itQBQQG0ehkfN3yLabSgJcuHzFWWlwG/eUygeagzLiecWAmp6jzSJHgpZUZRyUX0H3Z/kpmJzhYN14J95xv+FZ2cRI1sS1UK8gY5gMeslLH4eBTQOJvWsueVj/lHxEQRkTMppPrb4UlbMCjBphGGkG/T+BhWxfNY4sgmKYX3VtnGYP6PGbd7/zhNTRaKQtOIV6p142kq3r7oGhk4FfedUf2uff27hISJdBQ3zSjo4gs4IhfAT8iEs5dQPSS/4htWNP54ILhsaA4kt9030gLtKz0rm4PlYz9DBdSCEOImjF714PKHJrLiMcAMV81rV8m5oqGcQsbS916BMlxVSzm0V8uvUptNBg+wHrCCqRXp/babDqxXyBybHj72ZMboSoBXvO3FVBWKIflJ7ypbK44C0COruhQCnrQOAxBGrIores/mkvnSqDquRBJ4EQEIDKLCqEu/JLDNfxVPlzKAi5rIL45IUnwlobUduhrDegWHCjfggFxrurfDXv3rN4CNa1ccWxs=
+  skip_cleanup: true
+  file:
+    - bin/SoundBert-darwin-amd64.tar.gz
+    - bin/SoundBert-windows-386.zip
+    - bin/SoundBert-windows-amd64.zip
+    - bin/SoundBert-freebsd-386.tar.gz
+    - bin/SoundBert-freebsd-amd64.tar.gz
+    - bin/SoundBert-linux-386.tar.gz
+    - bin/SoundBert-linux-amd64.tar.gz
+    - bin/SoundBert-linux-arm.tar.gz
+  on:
+    repo: HorayNarea/SoundBert
+    tags: true

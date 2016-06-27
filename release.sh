@@ -33,8 +33,11 @@ compile() {
 	if [ "$2" = "windows" ]; then
 		local EXE=".exe"
 	fi
-	GOOS=$2 GOARCH=$3 GOARM=$4 go build -o $1/SoundBert/SoundBert-$2-$3$4$EXE .
+	GOOS=$2 GOARCH=$3 GOARM=$4 go build -o $1/SoundBert/SoundBert-$2-$3$EXE .
 }
+
+# Mac OS X doesn't need 32-bit
+release darwin amd64
 
 for OS in windows freebsd linux; do
 	for ARCH in amd64 386; do
@@ -42,8 +45,5 @@ for OS in windows freebsd linux; do
 	done
 done
 
-# # build for Raspberry-Pi
+# build for Raspberry-Pi
 release linux arm 6
-
-# Mac OS X doesn't need 32-bit
-release darwin amd64

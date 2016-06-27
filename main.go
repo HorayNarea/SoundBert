@@ -41,7 +41,8 @@ func main() {
 	http.HandleFunc("/list", list)
 	http.HandleFunc("/reload_sounds", reloadSounds)
 	http.HandleFunc("/stop", stop)
-	http.HandleFunc("/play", play)
+	http.HandleFunc("/play/", playGet)
+	http.HandleFunc("/play", playPost)
 
 	http.ListenAndServe(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)), nil)
 }

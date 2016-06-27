@@ -14,7 +14,6 @@ script:
   - rice embed-go
   - go vet ./...
   - go test ./...
-  - go build -o bin/SoundBert .
   - ./release.sh
 
 deploy:

@@ -3,22 +3,47 @@
 # force static build
 export CGO_ENABLED=0
 
-compile() {
-	echo "Compiling for $1 on $2..."
-	if [ "$1" = "windows" ]; then
-		local EXE=".exe"
-	fi
-	GOOS=$1 GOARCH=$2 GOARM=$3 go build -o bin/SoundBert-$1-$2$EXE .
+export SRCDIR=$(pwd)
+mkdir -p $SRCDIR/bin
+
+release() {
+	local TMPDIR=$(mktemp -d)
+	mkdir $TMPDIR/SoundBert
+	compile $TMPDIR $1 $2 $3
+	pack $TMPDIR $1 $2
+	rm -rf $TMPDIR
+	echo -n "\n"
 }
 
-for OS in freebsd linux windows; do
+pack() {
+	echo "Packing for $2 on $3..."
+	cd $1
+	cp $SRCDIR/config.default.toml $1/SoundBert/config.default.toml
+	if [ "$2" = "windows" ]; then
+		zip -rq SoundBert-$2-$3.zip SoundBert
+	else
+		tar cfz SoundBert-$2-$3.tar.gz SoundBert
+	fi
+	cd $SRCDIR
+	cp -f $1/SoundBert-* $SRCDIR/bin/.
+}
+
+compile() {
+	echo "Compiling for $2 on $3..."
+	if [ "$2" = "windows" ]; then
+		local EXE=".exe"
+	fi
+	GOOS=$2 GOARCH=$3 GOARM=$4 go build -o $1/SoundBert/SoundBert-$2-$3$4$EXE .
+}
+
+for OS in windows freebsd linux; do
 	for ARCH in amd64 386; do
-		compile $OS $ARCH
+		release $OS $ARCH
 	done
 done
 
-# Mac OS X doesn't need 32-bit
-compile darwin amd64
+# # build for Raspberry-Pi
+release linux arm 6
 
-# build for Raspberry-Pi
-compile linux arm 6
+# Mac OS X doesn't need 32-bit
+release darwin amd64

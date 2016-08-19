@@ -30,10 +30,18 @@ pack() {
 
 compile() {
 	echo "Compiling for $2 on $3..."
+
 	if [ "$2" = "windows" ]; then
 		local EXE=".exe"
 	fi
-	GOOS=$2 GOARCH=$3 GOARM=$4 go build -o $1/SoundBert/SoundBert-$2-$3$EXE .
+
+	if [ "$2-$3" = "linux-amd64" ]; then
+		local CGO_ENABLED=1
+		local CC=musl-clang
+		local LDFLAGS="-ldflags '-linkmode=external -extldflags=-static'"
+	fi
+
+	GOOS=$2 GOARCH=$3 GOARM=$4 go build $LDFLAGS -o $1/SoundBert/SoundBert-$2-$3$EXE .
 }
 
 # Mac OS X doesn't need 32-bit

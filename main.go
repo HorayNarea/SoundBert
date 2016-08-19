@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net"
 	"net/http"
 	"path"
@@ -43,5 +44,6 @@ func main() {
 	http.HandleFunc("/stop", stop)
 	http.HandleFunc("/play", play)
 
-	http.ListenAndServe(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)), nil)
+	log.Printf("Serving on http://%s/", net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)))
+	checkErr(http.ListenAndServe(net.JoinHostPort(conf.Host, strconv.Itoa(conf.Port)), nil))
 }
